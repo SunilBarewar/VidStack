@@ -22,9 +22,6 @@ export default defineConfig(
   // Base configurations
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-  ...tseslint.configs.strictTypeChecked,
-  perfectionist.configs["recommended-natural"],
 
   // Main configuration
   {

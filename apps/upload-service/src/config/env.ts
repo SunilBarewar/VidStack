@@ -8,7 +8,6 @@ dotenv.config();
 
 // Define schema with Zod
 const envSchema = z.object({
-  DATABASE_URL: z.string().url(),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
   NEW_RELIC_KEY: z.string().optional(),
   PORT: z.string().default("8000"),
@@ -16,6 +15,10 @@ const envSchema = z.object({
     .enum(["development", "test", "production"])
     .default("development"),
   REDIS_URL: z.string().optional(),
+  S3_BUCKET_REGION: z.string(),
+  S3_ACCESS_KEY: z.string(),
+  S3_SECRET_KEY: z.string(),
+  S3_BUCKET_NAME: z.string(),
 });
 
 // Parse + validate

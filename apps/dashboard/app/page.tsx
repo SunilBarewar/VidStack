@@ -1,29 +1,81 @@
 "use client";
 
-import { Button } from "@workspace/ui/components/button";
-import { toast } from "sonner";
+import AwsS3, { type AwsBody } from "@uppy/aws-s3";
+import Uppy from "@uppy/core";
+import Dashboard from "@uppy/react/dashboard";
+import { useState } from "react";
 
-export default function Page() {
-  return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">Hello World</h1>
-        <Button
-          variant="outline"
-          onClick={() =>
-            toast("Event has been created", {
-              description: "Sunday, December 03, 2023 at 9:00 AM",
-              action: {
-                label: "Undo",
-                onClick: () => console.log("Undo"),
-              },
-              className: "bg-red-500",
-            })
-          }
-        >
-          Show Toast
-        </Button>
-      </div>
-    </div>
-  );
+import "@uppy/core/css/style.min.css";
+import "@uppy/dashboard/css/style.min.css";
+import { uploadService } from "@/services/upload.service";
+import GoldenRetriever from "@uppy/golden-retriever";
+
+type Meta = {
+  license?: string;
+};
+
+function createUppy() {
+  const uppy = new Uppy<Meta, AwsBody>({
+    autoProceed: false,
+  });
+
+  uppy.use(GoldenRetriever);
+
+  uppy.use(AwsS3<Meta, AwsBody>, {
+    shouldUseMultipart: true,
+    // shouldUseMultipart: (file) => file.size > 100 * 2 ** 20,
+
+    async createMultipartUpload(file) {
+      return uploadService.createMultipartUpload({
+        filename: file.name,
+        filetype: file.type,
+      });
+    },
+
+    async listParts(file, { uploadId, key }) {
+      void file;
+
+      return uploadService.listParts({
+        uploadId: uploadService.requireUploadId(uploadId),
+        key,
+      });
+    },
+
+    async signPart(file, { uploadId, key, partNumber }) {
+      void file;
+
+      return uploadService.signPart({
+        uploadId: uploadService.requireUploadId(uploadId),
+        key,
+        partNumber,
+      });
+    },
+
+    async completeMultipartUpload(file, { uploadId, key, parts }) {
+      void file;
+
+      return uploadService.completeMultipartUpload({
+        uploadId: uploadService.requireUploadId(uploadId),
+        key,
+        parts,
+      });
+    },
+
+    async abortMultipartUpload(file, { uploadId, key }) {
+      void file;
+
+      await uploadService.abortMultipartUpload({
+        uploadId: uploadService.requireUploadId(uploadId),
+        key,
+      });
+    },
+  });
+
+  return uppy;
+}
+
+export default function UppyDashboard() {
+  const [uppy] = useState(createUppy);
+
+  return <Dashboard uppy={uppy} />;
 }

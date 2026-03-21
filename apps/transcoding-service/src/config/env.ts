@@ -11,7 +11,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
   NEW_RELIC_KEY: z.string().optional(),
-  PORT: z.string().default("8000"),
+  PORT: z.string().default("8001"),
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),

@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(ulid())
   name          String
   email         String
   emailVerified Boolean   @default(false)
@@ -18,13 +18,15 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  // uploads       Uploads[]
 
   @@unique([email])
   @@map("user")
+
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(ulid())
   expiresAt DateTime
   token     String
   createdAt DateTime @default(now())
@@ -39,7 +41,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(ulid())
   accountId             String
   providerId            String
   userId                String
@@ -58,7 +60,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(ulid())
   identifier String
   value      String
   expiresAt  DateTime
@@ -67,3 +69,30 @@ model Verification {
 
   @@map("verification")
 }
+
+// CREATE TABLE uploads (
+//   id UUID PRIMARY KEY,
+//   user_id UUID NOT NULL,
+//   file_name TEXT,
+//   file_size BIGINT,
+//   mime_type TEXT,
+
+//   s3_key TEXT,
+//   upload_id TEXT, -- S3 multipart uploadId
+
+//   status TEXT, -- initiated | uploading | completed | failed | aborted
+
+//   total_parts INT,
+//   uploaded_parts INT DEFAULT 0,
+
+//   created_at TIMESTAMP,
+//   updated_at TIMESTAMP
+// );
+
+// model Uploads {
+//   id String @id @default(ulid())
+//   userId String
+//   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@map("uploads")
+// }
