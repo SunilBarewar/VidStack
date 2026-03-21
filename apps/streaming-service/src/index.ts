@@ -7,14 +7,12 @@ import { env } from "./config/env";
 import { logger } from "./utils/logger";
 
 const app = express();
-const port = "3000";
-
-console.log(env.DATABASE_URL);
+const port = env.PORT;
 
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
     credentials: true,
   }),
 );
