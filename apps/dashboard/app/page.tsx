@@ -10,6 +10,14 @@ import "@uppy/dashboard/css/style.min.css";
 import { uploadService } from "@/services/upload.service";
 import GoldenRetriever from "@uppy/golden-retriever";
 
+import {
+  UppyContextProvider,
+  Dropzone,
+  FilesList,
+  UploadButton,
+  useUppyContext,
+} from "@uppy/react";
+
 type Meta = {
   license?: string;
 };
@@ -77,5 +85,24 @@ function createUppy() {
 export default function UppyDashboard() {
   const [uppy] = useState(createUppy);
 
-  return <Dashboard uppy={uppy} />;
+  return (
+    <UppyContextProvider uppy={uppy}>
+      <Dropzone />
+      <FilesList />
+      <UploadButton />
+
+      {/* {uploadProgress()} */}
+    </UppyContextProvider>
+  );
 }
+
+const uploadProgress = () => {
+  const { progress, status } = useUppyContext();
+
+  return (
+    <div>
+      <div className="text-xl text-amber-400">{progress}%</div>
+      <div className="text-2xl text-green-200">{status}</div>
+    </div>
+  );
+};

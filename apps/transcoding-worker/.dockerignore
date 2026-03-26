@@ -1,0 +1,5 @@
+node_modules
+dist
+.tmp-transcoding-deploy
+npm-debug.log
+.env
