@@ -125,3 +125,175 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* --- Uppy Premium Design --- */
+
+.uppy-Root {
+  @apply w-full max-w-2xl mx-auto space-y-8;
+}
+
+/* Dropzone styling */
+[data-uppy-element="dropzone"] {
+  @apply relative cursor-pointer overflow-hidden rounded-[2rem] border-2 border-dashed border-border bg-card/30 p-12 text-center transition-all duration-500 ease-out;
+  @apply hover:border-primary/50 hover:bg-primary/[0.02] hover:shadow-[0_20px_50px_-12px_rgba(var(--primary),0.1)] hover:-translate-y-1;
+}
+
+[data-uppy-element="dropzone"]::before {
+  content: "";
+  @apply absolute inset-0 -z-10 bg-gradient-to-br from-primary/[0.05] via-transparent to-accent/[0.05] opacity-0 transition-opacity duration-500;
+}
+
+[data-uppy-element="dropzone"]:hover::before {
+  @apply opacity-100;
+}
+
+[data-uppy-element="dropzone"] p {
+  @apply text-lg font-semibold text-muted-foreground transition-colors duration-300;
+}
+
+[data-uppy-element="dropzone"]:hover p {
+  @apply text-foreground;
+}
+
+/* File List styling */
+[data-uppy-element="files-list"] {
+  @apply mt-10 grid gap-4 w-full animate-in fade-in slide-in-from-bottom-4 duration-500;
+}
+
+[data-uppy-element="files-list"] li {
+  @apply flex flex-col gap-4 rounded-2xl border border-border bg-card/50 p-5 shadow-sm backdrop-blur-md transition-all duration-300;
+  @apply hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 hover:bg-card;
+}
+
+/* Item Header */
+[data-uppy-element="files-list"] li > div:first-child {
+  @apply flex items-center gap-4;
+}
+
+/* Thumbnail */
+[data-uppy-element="thumbnail"] {
+  @apply relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl bg-muted shadow-inner;
+}
+
+[data-uppy-element="thumbnail"] img {
+  @apply h-full w-full object-cover transition-transform duration-500 hover:scale-110;
+}
+
+/* File Info */
+.uppy-file-info {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+[data-uppy-element="files-list"] p.uppy-file-name {
+  @apply truncate text-sm font-bold tracking-tight text-foreground;
+}
+
+[data-uppy-element="files-list"] p.uppy-file-size {
+  @apply text-xs font-medium text-muted-foreground;
+}
+
+/* Progress Bar */
+[data-uppy-element="files-list"] progress {
+  @apply h-1.5 w-full appearance-none overflow-hidden rounded-full bg-muted/50;
+}
+
+[data-uppy-element="files-list"] progress::-webkit-progress-bar {
+  @apply bg-transparent;
+}
+
+[data-uppy-element="files-list"] progress::-webkit-progress-value {
+  @apply bg-gradient-to-r from-primary via-primary/80 to-primary/60 transition-all duration-700 ease-in-out;
+}
+
+[data-uppy-element="files-list"] progress::-moz-progress-bar {
+  @apply bg-primary rounded-full;
+}
+
+/* Action Buttons */
+[data-uppy-element="files-list"] button {
+  @apply ml-auto rounded-xl bg-secondary/50 p-2.5 text-muted-foreground transition-all duration-200;
+  @apply hover:bg-destructive/10 hover:text-destructive capitalize;
+}
+
+/* Upload Button */
+[data-uppy-element="upload-button"] {
+  @apply relative mt-10 flex w-full items-center justify-center gap-3 overflow-hidden rounded-[1.5rem] bg-primary px-8 py-5 text-lg font-black tracking-wide text-primary-foreground shadow-[0_20px_40px_-10px_rgba(var(--primary),0.3)] transition-all duration-500;
+  @apply hover:bg-primary/90 hover:shadow-[0_25px_50px_-12px_rgba(var(--primary),0.4)] hover:-translate-y-1 active:scale-[0.97];
+  @apply disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed disabled:transform-none;
+}
+
+[data-uppy-element="upload-button"] span {
+  @apply relative z-10;
+}
+
+[data-uppy-element="upload-button"]::after {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full;
+  animation: uppy-shimmer 3s infinite linear;
+}
+
+@keyframes uppy-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Upload Controls Container */
+.uppy-Root .uppy-upload-controls {
+  @apply mt-10 space-y-4;
+}
+
+/* Pause and Cancel Buttons Container */
+.uppy-Root .uppy-upload-actions {
+  @apply flex gap-3;
+}
+
+/* Action Buttons (Pause, Cancel) */
+[data-uppy-element="pause-button"],
+[data-uppy-element="cancel-button"] {
+  @apply flex-1 p-4 rounded-xl font-bold tracking-tight transition-all duration-300 transform-gpu active:scale-95 text-xs uppercase bg-card/50 border border-border backdrop-blur-sm;
+}
+
+[data-uppy-element="pause-button"] {
+  @apply text-orange-500 hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/5;
+}
+
+[data-uppy-element="cancel-button"] {
+  @apply text-destructive hover:bg-destructive/10 hover:border-destructive/30 hover:shadow-lg hover:shadow-destructive/5;
+}
+
+/* Upload Button Progress Overlay */
+[data-uppy-element="upload-button"] > div {
+  @apply absolute inset-0 -z-0 bg-primary-foreground/10 transition-transform duration-700 ease-out origin-left;
+}
+
+[data-uppy-element="upload-button"] span {
+  @apply relative z-10 drop-shadow-sm;
+}
+
+/* Loading State Visuals */
+[data-state="uploading"] [data-uppy-element="upload-button"] {
+  @apply bg-primary/80;
+}
+
+.uppy-Dashboard-AddFiles-info {
+  display: none !important;
+}
+
+.uppy-StatusBar-actions {
+  display: flex !important;
+  gap: 1rem !important;
+}
+
+.uppy-StatusBar-actions svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.uppy-DashboardContent-addMore {
+  display: none !important;
+  pointer-events: none !important;
+}

@@ -4,10 +4,9 @@ import path from "node:path";
 
 import { downloadFile, uploadFile } from "./s3.js";
 import { transcodeVariant, type VariantSpec } from "./transcoder.js";
-import { env } from "./config/env.js";
 
-const INPUT_BUCKET = env.S3_BUCKET_NAME;
-const OUTPUT_BUCKET = env.S3_BUCKET_NAME;
+const INPUT_BUCKET = process.env.S3_BUCKET_NAME!;
+const OUTPUT_BUCKET = process.env.S3_BUCKET_NAME!;
 
 const HLS_VARIANTS: VariantSpec[] = [
   {
@@ -78,6 +77,7 @@ async function processJob(job: any) {
 
   fs.writeFileSync(masterPlaylistPath, createMasterPlaylist(HLS_VARIANTS));
 
+  // Uploading master playlist
   await uploadFile(OUTPUT_BUCKET, `${videoId}/index.m3u8`, masterPlaylistPath);
 
   fs.rmSync(jobDir, { recursive: true, force: true });
@@ -89,11 +89,17 @@ async function processJob(job: any) {
 
 async function main() {
   try {
-    const job = JSON.parse(process.argv[2]);
-    await processJob(job);
+    const videoId = process.env.VIDEO_ID;
+    const s3Key = process.env.S3_KEY;
+
+    if (!videoId || !s3Key) {
+      throw new Error("VIDEO_ID or S3_KEY is not defined");
+    }
+
+    await processJob({ videoId, s3Key });
     process.exit(0);
   } catch (err) {
-    console.error("Error:", err);
+    console.log("Error:", err);
     process.exit(1);
   }
 }

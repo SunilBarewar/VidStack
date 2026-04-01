@@ -35,3 +35,5 @@ npm-debug.log*
 .DS_Store
 *.pem
 .tmp-transcoding-deploy
+temp_auto_push.bat
+temp_interactive_push.bat

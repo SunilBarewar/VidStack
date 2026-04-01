@@ -9,6 +9,6 @@
     "module": "esnext",
     "moduleResolution": "bundler"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/container/**/*"],
   "exclude": ["dist"]
 }
