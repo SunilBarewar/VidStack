@@ -6,13 +6,12 @@ import {
 import fs from "node:fs";
 import path from "node:path";
 import { pipeline } from "node:stream/promises";
-import { env } from "./config/env.js";
 
 const s3 = new S3Client({
-  region: env.S3_BUCKET_REGION,
+  region: process.env.S3_BUCKET_REGION,
   credentials: {
-    accessKeyId: env.S3_ACCESS_KEY,
-    secretAccessKey: env.S3_SECRET_KEY,
+    accessKeyId: process.env.S3_ACCESS_KEY!,
+    secretAccessKey: process.env.S3_SECRET_KEY!,
   },
 });
 

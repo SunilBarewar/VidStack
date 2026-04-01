@@ -5,7 +5,7 @@ import Uppy from "@uppy/core";
 import Dashboard from "@uppy/react/dashboard";
 import { useState } from "react";
 
-import "@uppy/core/css/style.min.css";
+// import "@uppy/core/css/style.min.css";
 import "@uppy/dashboard/css/style.min.css";
 import { uploadService } from "@/services/upload.service";
 import GoldenRetriever from "@uppy/golden-retriever";
@@ -16,6 +16,7 @@ import {
   FilesList,
   UploadButton,
   useUppyContext,
+  useFileInput,
 } from "@uppy/react";
 
 type Meta = {
@@ -86,23 +87,57 @@ export default function UppyDashboard() {
   const [uppy] = useState(createUppy);
 
   return (
-    <UppyContextProvider uppy={uppy}>
-      <Dropzone />
-      <FilesList />
-      <UploadButton />
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background py-20 px-6">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-12 text-center space-y-4">
+          <h1 className="text-4xl font-black tracking-tight sm:text-6xl bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent">
+            Upload your media
+          </h1>
+          <p className="text-lg text-muted-foreground font-medium">
+            Seamlessly upload your videos to the cloud with high-performance
+            multipart streaming.
+          </p>
+        </div>
 
-      {/* {uploadProgress()} */}
-    </UppyContextProvider>
+        <div className="uppy-Root">
+          {/* <UppyContextProvider uppy={uppy}>
+            <Dropzone />
+
+            <UploadProgress />
+            <UploadButton />
+          </UppyContextProvider> */}
+
+          <Dashboard uppy={uppy} />
+        </div>
+
+        <footer className="mt-20 text-center">
+          <p className="text-xs font-semibold text-muted-foreground/40 uppercase tracking-[0.2em]">
+            Powered by VidStack Engine
+          </p>
+        </footer>
+      </div>
+    </main>
   );
 }
 
-const uploadProgress = () => {
+const UploadProgress = () => {
   const { progress, status } = useUppyContext();
 
   return (
-    <div>
-      <div className="text-xl text-amber-400">{progress}%</div>
-      <div className="text-2xl text-green-200">{status}</div>
+    <div className="mt-12">
+      <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground/60 mb-4 ml-1">
+        Selected Files
+      </h2>
+      <div className="flex items-center gap-4">
+        <div className="text-xl text-amber-400 bg-amber-100 p-2 border">
+          {progress}%
+        </div>
+        <div className="text-xl text-amber-400 bg-amber-100 p-2 border">
+          {status}
+        </div>
+      </div>
+
+      <FilesList />
     </div>
   );
 };
